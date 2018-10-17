@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h3>Log In</h3>
+
+  <form method="POST" action="{% url 'accounts:login' %}">
+    {% csrf_token %}
+    <div class="col-md-6">
+      {% if error %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+      {% endif %}
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputUserName">User Name</label>
+          <input type="text" name="username" class="form-control" id="inputUserName">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputPassword">Password</label>
+          <input type="password" name="password" class="form-control" id="inputPassword">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary mb-2">Log In</button>
+    </div>
+  </form>
+
+{% endblock %}
