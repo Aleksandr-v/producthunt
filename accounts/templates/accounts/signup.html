@@ -4,7 +4,7 @@
   <h3>Sign Up</h3>
   <br>
 
-  <form method="POST" action="{% url 'accounts:signup' %}">
+  <form method="POST" action="{% url 'signup' %}">
     {% csrf_token %}
     <div class="col-md-6">
       {% if error %}

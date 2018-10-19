@@ -3,7 +3,7 @@
 {% block content %}
   <h3>Log In</h3>
 
-  <form method="POST" action="{% url 'accounts:login' %}">
+  <form method="POST" action="{% url 'login' %}">
     {% csrf_token %}
     <div class="col-md-6">
       {% if error %}
@@ -20,6 +20,7 @@
           <label for="inputPassword">Password</label>
           <input type="password" name="password" class="form-control" id="inputPassword">
         </div>
+          <input type="hidden" name="next_page" value="{{ next }}">
       </div>
 
       <button type="submit" class="btn btn-primary mb-2">Log In</button>

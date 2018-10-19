@@ -29,12 +29,16 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
+            print(request.POST)
+            if request.POST['next_page'] is not '':
+                return redirect(request.POST['next_page'])
             return redirect('home')
         else:
             # Return an 'invalid login' error message.
             return render(request, 'accounts/login.html', {'error':'Incorrect username or password'})
     else:
-        return render(request, 'accounts/login.html')
+        next = request.GET.get('next', '')
+        return render(request, 'accounts/login.html', {'next':next})
 
 def logout(request):
     if request.method == 'POST':

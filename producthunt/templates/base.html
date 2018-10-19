@@ -33,14 +33,15 @@
           <div class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
               <span class="nav-item nav-link" style="font-family: 'Mali', cursive; color: #db542b;">{{ user.username|capfirst }}</span>
+              <a class="nav-item nav-link" href="{% url 'create_product' %}">Create product</a>
               <a class="nav-item nav-link" href="javascript:{document.getElementById('logout').submit()}">Log Out</a>
-                <form id="logout" method="POST" action="{% url 'accounts:logout' %}">
+                <form id="logout" method="POST" action="{% url 'logout' %}">
                   {% csrf_token %}
                   <input type="hidden">
                 </form>
             {% else %}
-              <a class="nav-item nav-link" href="{% url 'accounts:signup' %}">Sign Up</a>
-              <a class="nav-item nav-link" href="{% url 'accounts:login' %}">Login</a>
+              <a class="nav-item nav-link" href="{% url 'signup' %}">Sign Up</a>
+              <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
             {% endif %}
           </div>
         </div>
@@ -49,9 +50,15 @@
   </header>
 
   <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <div class="col-md-3">
 
-    {% block content %}
-    {% endblock %}
+      </div>
+    </div>
 
   </div>
 
