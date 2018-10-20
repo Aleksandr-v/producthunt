@@ -6,7 +6,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     url = models.URLField()
     pub_date = models.DateTimeField(default=timezone.now)
-    votes_total = models.IntegerField(default=1)
+    votes = models.ManyToManyField(User)
     image = models.ImageField(upload_to='images/products/')
     icon = models.ImageField(upload_to='images/products/icons/')
     body = models.TextField()

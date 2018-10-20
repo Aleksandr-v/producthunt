@@ -34,6 +34,7 @@
             {% if user.is_authenticated %}
               <span class="nav-item nav-link" style="font-family: 'Mali', cursive; color: #db542b;">{{ user.username|capfirst }}</span>
               <a class="nav-item nav-link" href="{% url 'create_product' %}">Create product</a>
+              <a class="nav-item nav-link" href="{% url 'card' %}">Card</a>
               <a class="nav-item nav-link" href="javascript:{document.getElementById('logout').submit()}">Log Out</a>
                 <form id="logout" method="POST" action="{% url 'logout' %}">
                   {% csrf_token %}

@@ -33,6 +33,8 @@ def detail(request, product_id):
 @login_required(login_url='/accounts/login')
 def upvote(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
-    product.votes_total += 1
-    product.save()
+    if product.votes.filter(pk=request.user.id).exists():
+        product.votes.remove(request.user)
+    else:
+        product.votes.add(request.user)
     return redirect('detail', product_id=product.id)

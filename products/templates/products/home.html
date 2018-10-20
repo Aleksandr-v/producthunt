@@ -16,7 +16,7 @@
         {{ product.body|truncatewords:20|linebreaks }}
       </div>
       <div class="col-md-3">
-        <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button type="button" class="btn btn-block" name="button">Upvote {{ product.votes_total }}</button></a>
+        <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button type="button" class="btn btn-block" name="button">Upvote {{ product.votes.count }}</button></a>
       </div>
     </div>
 

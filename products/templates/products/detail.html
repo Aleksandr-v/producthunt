@@ -14,7 +14,7 @@
       <span class="float-right"><strong>{{ product.pub_date_pretty }}</strong> </span>
     </div>
     <div class="col-md-4">
-      <a href="javascript:{document.getElementById('upvote').submit()}"><button type="button" class="btn btn-block" name="button">Upvote {{ product.votes_total }}</button></a>
+      <a href="javascript:{document.getElementById('upvote').submit()}"><button type="button" class="btn btn-block" name="button">Upvote {{ product.votes.count }}</button></a>
     </div>
   </div>
   {{ product.body|linebreaks }}

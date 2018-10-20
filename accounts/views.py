@@ -29,7 +29,6 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            print(request.POST)
             if request.POST['next_page'] is not '':
                 return redirect(request.POST['next_page'])
             return redirect('home')

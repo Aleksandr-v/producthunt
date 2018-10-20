@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h3>Product Card</h3>
+  <div class="row">
+  {% for good in card %}
+    <div class="col-md-3">
+      {{ good.good.name }}
+    </div>
+    <div class="col-md-3">
+      {{ good.good.price }}$
+    </div>
+    <div class="col-md-3">
+      {{ good.quantity }}
+    </div>
+    <div class="col-md-3">
+      {% widthratio good.good.price 1 good.quantity %}$
+    </div>
+  {% endfor %}
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-3">
+      Total Price
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3">
+      {{ total_price }}$
+    </div>
+  </div>
+{% endblock %}
