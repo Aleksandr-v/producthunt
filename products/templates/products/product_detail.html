@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <br>
+  <img src="{{ product.icon.url }}" width="100" alt="">
+  {{ product.title }}
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-8">
+      <img src="{{ product.image.url }}" class="img-fluid">
+      <span class="float-left">Hunted by <strong>{{ product.hunter }}</strong></span>
+      <span class="float-right"><strong>{{ product.pub_date_pretty }}</strong> </span>
+    </div>
+    <div class="col-md-4">
+      <a href="javascript:{document.getElementById('upvote').submit()}"><button type="button" class="btn btn-block {% if user in product.votes.all %} btn-success {% endif %}" name="button">Upvote {{ product.votes.count }}</button></a>
+    </div>
+  </div>
+  {{ product.body|linebreaks }}
+  <a href="{{ product.url }}">{{ product.url }}</a>
+
+  <form id="upvote" method="POST" action="{% url 'upvote' product.id %}">
+    {% csrf_token %}
+    <input type="hidden">
+  </form>
+
+  {% if product.hunter == user %}
+    <a href="{% url 'update' product.id %}" class="btn btn-info">Update</a>
+    <a href="{% url 'delete' product.id %}" class="btn btn-danger">Delete</a>
+  {% endif %}
+
+  {% if form %}
+      <h3 id="write_comment" style="cursor: pointer;"><a onclick="return show_comments_form('write_comment')">Написать комментарий</a></h3>
+      <form id="comment_form" action="{% url 'add_comment' product.id %}" method="post" class="mb-3">
+      {% csrf_token %}
+      {{ form }}
+          <button type="submit" class="btn btn-primary">&nbsp;&nbsp;Комментировать</button>
+      </form>
+  {% else %}
+      <div class="panel panel-warning">
+          <div class="panel-heading">
+              <h3 class="panel-title">Комментарии</h3>
+          </div>
+          <div class="panel-body">
+              Только авторизованные пользователи могут оставлять комментарии.<br />
+          </div>
+      </div>
+  {% endif %}
+  <h3>Всего комментариев {{ product.comments.count }}</h3>
+  {% for comment in comments %}
+        <a name="comment-{{ comment.id }}"></a>
+        <div class="row" id="{{ comment.id }}">
+            <div class="col-md-{{ comment.get_col_length }} mx-auto">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a href="{% url 'profile' comment.author.id %}" style="text-decoration: none">
+                          <img src="{{ comment.author.profile.avatar_url }}" width="30" height="30" class="rounded-circle">
+                          <strong>{{ comment.author.username }}</strong>
+                        </a>&nbsp;&nbsp;
+                        <small class="text-muted">{{ comment.pub_date|timesince }}</small>
+                    </div>
+                    <div class="panel-body">
+                        <div>{{ comment.content|safe }}</div>
+                        {% if form %}
+                          <a class="btn btn-default btn-xs pull-right"
+                            onclick="return show_comments_form({{ comment.id }}, {{ comment.id }}, {{ comment.author.id }})">
+                            &nbsp;&nbsp;<small class="text-muted">Ответить</small></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if comment.is_parent %}
+          {% for child in comment.childrens.all %}
+            <a name="comment-{{ child.id }}"></a>
+            <div class="row" id="{{ child.id }}">
+                <div class="col-md-{{ child.get_col_length }} mx-auto">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a href="{% url 'profile' child.author.id %}" style="text-decoration: none">
+                              <img src="{{ child.author.profile.avatar_url }}" width="30" height="30" class="rounded-circle">
+                            <strong>{{ child.author.username }}</strong>
+                            </a>&nbsp;&nbsp;&rarr;&nbsp;&nbsp;
+                            {% if child.receiver %}
+                              <a href="{% url 'profile' child.receiver.id %}" style="text-decoration: none">
+                                <img src="{{ child.receiver.profile.avatar_url }}" width="30" height="30" class="rounded-circle">
+                                <strong>{{ child.receiver.username }}</strong>
+                              </a>
+                            {% endif %}
+                            <small class="text-muted">{{ child.pub_date|timesince }}</small>
+                        </div>
+                        <div class="panel-body">
+                            <div>{{ child.content|safe }}</div>
+                            {% if form %}
+                              <a class="btn btn-default btn-xs pull-right"
+                              onclick="return show_comments_form({{ child.id }}, {{ child.parent.id }}, {{ child.author.id }}, 2)">
+                              &nbsp;&nbsp;<small class="text-muted">Ответить</small></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+  <script type="text/javascript">
+
+    function show_comments_form(comment_id, parent_id=null, receiver=null, level=1)
+    {
+      if (comment_id == 'write_comment')
+      {
+          $("#comment_form").removeClass("col-md-10 mx-auto");
+          $("#id_parent_comment").val('');
+          $("#id_receiver").val('');
+      }
+      else
+      {
+          if (level == 1)
+          {
+            $("#comment_form").removeClass("col-md-10 mx-auto");
+            $("#id_parent_comment").val(parent_id);
+            $("#id_receiver").val(receiver);
+          }
+          else
+          {
+            $("#comment_form").addClass("col-md-10 mx-auto");
+            $("#id_parent_comment").val(parent_id);
+            $("#id_receiver").val(receiver);
+          }
+      }
+      $("#comment_form").insertAfter("#" + comment_id);
+
+    }
+  </script>
+
+{% endblock %}

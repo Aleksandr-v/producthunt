@@ -3,8 +3,24 @@
 {% block content %}
   <h3>Product Card</h3>
   <div class="row">
-  {% for good in card %}
+    <div class="col-md-3 text-center">
+      Title
+    </div>
     <div class="col-md-3">
+      Price
+    </div>
+    <div class="col-md-3">
+      Quantity
+    </div>
+    <div class="col-md-3">
+      Sum
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+  {% for good in card_list %}
+    <div class="col-md-3">
+      <img src="{{ good.good.image_thumbnail.url }}" width="50">
       {{ good.good.name }}
     </div>
     <div class="col-md-3">

@@ -2,11 +2,22 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFit
+
 class Good(models.Model):
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='images/goods/')
     description = models.TextField()
     price = models.PositiveIntegerField()
+
+    image = ProcessedImageField(upload_to='images/goods/',
+                                   processors=[ResizeToFit(209, 119)],
+                                   format='JPEG',
+                                   options={'quality': 100})
+    image_thumbnail = ImageSpecField(source='image',
+                                      processors=[ResizeToFit(60, 40)],
+                                      format='JPEG',
+                                      options={'quality': 100})
 
     def __str__(self):
         return self.name

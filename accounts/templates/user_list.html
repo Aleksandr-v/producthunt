@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Users</h1>
+<ul style="list-style: none;">
+{% for user in user_list %}
+    {% if user.profile.avatar %}
+      <li><img src="{{ user.profile.avatar.url }}" width="50"><a href="{% url 'profile' user.id %}">{{ user.username }}</a></li>
+    {% else %}
+      <li><img src="{% static 'empty-user.jpg' %}" width="50"><a href="{% url 'profile' user.id %}">{{ user.username }}</a></li>
+    {% endif %}
+{% empty %}
+    <li>No users yet.</li>
+{% endfor %}
+</ul>
+
+<ul class="pagination">
+  {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">first</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+  {% endif %}
+
+  <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+
+  {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last</a></li>
+  {% endif %}
+</ul>
+Number of pages - {{ page_obj.paginator.num_pages }}
+{% endblock %}

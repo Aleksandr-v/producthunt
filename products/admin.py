@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, Comment
 
 
 @admin.register(Product)
@@ -15,3 +15,7 @@ class ProductAdmin(admin.ModelAdmin):
     date_hierarchy = 'pub_date'
 
     ordering = ('pub_date',)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('author', 'receiver', 'content', 'pub_date')

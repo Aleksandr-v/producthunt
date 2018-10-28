@@ -27,10 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'imagekit',
+    'crispy_forms',
+    'social_django',
     'shop.apps.ShopConfig',
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
@@ -41,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends', # Добавил эту строку
             ],
         },
     },
@@ -87,6 +94,17 @@ DATABASES = {
     }
 }
 
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',          # бекенд авторизации через ВКонтакте
+    'django.contrib.auth.backends.ModelBackend', # бекенд классической аутентификации, чтобы работала авторизация через обычный логин и пароль
+)
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '6730397'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'm2mvkzKJ9Idc7hqPbGSC'
+
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h3>Profile</h3>
+<div class="row">
+  <div class="col-md-6">
+      <img src="{{ hunter.profile.avatar_url }}" class="img-fluid">
+  </div>
+  <div class="col-md-6">
+    <h3 class="my-0 font-weight-normal">{{ hunter.username }}</h3>
+    <hr>
+    <h5><small class="text-muted">gender</small><span>{{ hunter.profile.gender }}</span></h5>
+    <h5><small class="text-muted">age </small>{{ hunter.profile.age }}</h5>
+    <a href="{% url 'user_votes' hunter.id %}">
+      {% if user.id == hunter.id %} My Votes {% else %} User Votes {% endif %}
+    </a>
+  </div>
+</div>
+{% endblock %}

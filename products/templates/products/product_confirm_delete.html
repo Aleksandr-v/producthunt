@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ product }}"?</p>
+    <img src="{{ product.icon.url }}" width="100">
+    <input type="submit" class="btn btn-danger" value="Confirm" />
+</form>
+
+{% endblock %}

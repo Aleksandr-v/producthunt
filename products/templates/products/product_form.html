@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
   <h3>Create Product</h3>
   <br>
@@ -7,10 +9,8 @@
   <form method="POST" action="{% url 'create_product' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="col-md-6">
-
-      {% include 'form_snippet.html' %}
+      {{ form|crispy }}
       <button type="submit" class="btn btn-primary mb-2">Create</button>
-      
     </div>
   </form>
 

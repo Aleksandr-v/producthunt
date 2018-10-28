@@ -6,17 +6,17 @@
   <img src="{% static 'logo2.jpg' %}" class="d-inline-block alighn-top" width="100">
   <hr>
 
-  {% for product in products %}
+  {% for product in product_list %}
     <div class="row pt-3">
       <div class="col-md-2">
-        <img src="{{ product.icon.url }}" class="img-fluid" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
+        <img src="{{ product.icon.url }}" class="img-fluid" onclick="window.location='{{ product.get_absolute_url }}';" style="cursor: pointer;">
       </div>
       <div class="col-md-7" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
         {{ product.title }}
         {{ product.body|truncatewords:20|linebreaks }}
       </div>
       <div class="col-md-3">
-        <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button type="button" class="btn btn-block" name="button">Upvote {{ product.votes.count }}</button></a>
+        <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button type="button" class="btn btn-block {% if user in product.votes.all %} btn-success {% endif %}" name="button">Upvote {{ product.votes.count }}</button></a>
       </div>
     </div>
 
